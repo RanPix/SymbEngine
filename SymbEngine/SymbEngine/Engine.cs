@@ -2,6 +2,8 @@
 
 namespace SymbEngine;
 
-class Engine
+static public class Engine
 {
+
+
 }
