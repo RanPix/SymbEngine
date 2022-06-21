@@ -140,8 +140,15 @@ public static class Renderer
 
         private void GetCameraInBound(Map map)
         {
-            // Make fool protection
-            position.x = Math.Clamp(position.x, (int)Math.Ceiling((double)GameSettings.renderWidth/2), (map.size.x-((int)Math.Ceiling((double)GameSettings.renderWidth / 2))));
+            if (GameSettings.renderWidth  > map.size.x) GameSettings.renderWidth  = map.size.x; position.x = map.size.x / 2;
+            if (GameSettings.renderHeight > map.size.y) GameSettings.renderHeight = map.size.y; position.y = map.size.y / 2;
+
+            bool sizeIsOne =  map.size.x == 1;
+                 sizeIsOne &= map.size.y == 1;
+            
+            if (sizeIsOne) return;
+
+            position.x = Math.Clamp(position.x, (int)Math.Ceiling((double)GameSettings.renderWidth/2),    (map.size.x - ((int)Math.Ceiling((double)GameSettings.renderWidth / 2))));
             position.y = Math.Clamp(position.y, (int)Math.Ceiling((double)GameSettings.renderHeight / 2), (map.size.y - ((int)Math.Ceiling((double)GameSettings.renderHeight / 2))));
         }
         
