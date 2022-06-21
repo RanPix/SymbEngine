@@ -2,7 +2,7 @@
 
 namespace SymbEngine;
 
-//Gimmigoodies
+//Gimmigoodies ok
 
 public class Vector2
 {
