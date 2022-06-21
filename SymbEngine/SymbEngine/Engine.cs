@@ -40,7 +40,7 @@ public static class GameSettings
 }
 
 public class Tile
-{
+{//asd
     string same { get; }
     string symbol { get; }
     ConsoleColor color { get; }
