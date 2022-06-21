@@ -4,8 +4,8 @@ namespace SymbEngine;
 
 public class Vector2
 {
-    public int x;
-    public int y;
+    public int x { get; set; }
+    public int y { get; set; }
 
     public Vector2(int X, int Y)
     {
@@ -35,15 +35,15 @@ public class Vector2
 
 public static class GameSettings
 {
-    public static int renderWidth { public get; protected set; }
-    public static int renderHeight { public get; protected set; }
+    public static int renderWidth { get; set; }
+    public static int renderHeight { get; set; }
 }
 
 public class Tile
-{//asdsdad
-    string same { get; }
-    string symbol { get; }
-    ConsoleColor color { get; }
+{
+    public string name { get; }
+    public string symbol { get; }
+    public ConsoleColor color { get; }
 
     public Tile(string Name, string Symbol, ConsoleColor Color)
     {
@@ -60,11 +60,11 @@ public class Tile
 
 public class Entity
 {
-    string name   { get; }
-    string symbol { get; } = "";
-    ConsoleColor color { get; }
+    public string name   { get; }
+    public string symbol { get; } = "";
+    public ConsoleColor color { get; }
 
-    public Vector2 position { get; set; }
+    public Vector2? position { get; set; }
 
     public Entity(string Name, string Symbol, ConsoleColor Color, Vector2 Position)
     {
@@ -72,18 +72,18 @@ public class Entity
         symbol = Symbol;
         color = Color;
 
-        position = Position
+        position = Position;
     }
 
     public static Dictionary<string, Entity> Bestiary { get; } = new Dictionary<string, Entity>()
     {
-        ["Void"] = new Entity("Void", " ", ConsoleColor.Black)
+        ["Void"] = new Entity("Void", " ", ConsoleColor.Black, null)
     };
 }
 
 public class Map
 {
-    Vector2 size { get; }
+    public Vector2 size { get; }
 
     public Tile[,]   TileMap   { get; protected set; }
     public Entity[,] EntityMap { get; protected set; }
@@ -130,20 +130,37 @@ public class Map
 
 public static class Renderer
 {
-    public static class Camera
+    public class Camera
     {
         public Vector2 position { get; protected set; } = new Vector2((int)(GameSettings.renderWidth/2), (int)(GameSettings.renderHeight/2)); // Regular Case
 
-        public Entity? entityToBind { get; protected set; } = null;
+        public Entity? entityToBind { get; set; } = null;
 
-        bool isFollowingEntity { get; set; } = false;
+        bool isFollowingEntity { get; set; } = true;
 
-        public void MoveCamera()
+        private void GetCameraInBound(Map map)
+        {
+            // Make fool protection
+            position.x = Math.Clamp(position.x, (int)Math.Ceiling((double)GameSettings.renderWidth/2), (map.size.x-((int)Math.Ceiling((double)GameSettings.renderWidth / 2))));
+            position.y = Math.Clamp(position.y, (int)Math.Ceiling((double)GameSettings.renderHeight / 2), (map.size.y - ((int)Math.Ceiling((double)GameSettings.renderHeight / 2))));
+        }
+        
+        public void MoveCamera(Map map)
         {
             if (isFollowingEntity && entityToBind != null)
             {
                 this.position = entityToBind.position;
             }
+            GetCameraInBound(map);
+        }
+
+        public void MoveCamera(Map map, Vector2 position)
+        {
+            if(isFollowingEntity && entityToBind != null)
+            {
+                this.position = entityToBind.position;
+            }
+            GetCameraInBound(map);
         }
     }
 
