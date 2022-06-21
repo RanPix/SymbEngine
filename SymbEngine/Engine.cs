@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SymbEngine;
+﻿namespace SymbEngine;
 
 //Gimmigoodies ok
 
@@ -134,7 +132,7 @@ public static class Renderer
 {
     public class Camera
     {
-        public Vector2 position { get; protected set; } = new Vector2((int)(GameSettings.renderWidth/2), (int)(GameSettings.renderHeight/2)); // Regular Case
+        public Vector2 position { get; protected set; } = new Vector2(GameSettings.renderWidth / 2, GameSettings.renderHeight / 2); // Regular Case
 
         public Entity? entityToBind { get; set; } = null;
 
