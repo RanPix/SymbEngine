@@ -64,7 +64,7 @@ public class Entity
     string symbol { get; } = "";
     ConsoleColor color { get; }
 
-    Vector2 position { get; set; }
+    public Vector2 position { get; set; }
 
     public Entity(string Name, string Symbol, ConsoleColor Color, Vector2 Position)
     {
@@ -132,12 +132,19 @@ public static class Renderer
 {
     public static class Camera
     {
-        public Vector2 position { get; protected set; } = new Vector2();
+        public Vector2 position { get; protected set; } = new Vector2((int)(GameSettings.renderWidth/2), (int)(GameSettings.renderHeight/2)); // Regular Case
 
         public Entity? entityToBind { get; protected set; } = null;
 
-        bool isFollowingEntity = false;
+        bool isFollowingEntity { get; set; } = false;
 
+        public void MoveCamera()
+        {
+            if (isFollowingEntity && entityToBind != null)
+            {
+                this.position = entityToBind.position;
+            }
+        }
     }
 
     public static void RenderMap(Map map)
